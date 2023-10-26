@@ -1,9 +1,12 @@
-#include <iostream>
-#include <string>
+#include "mainwindow.h"
+#include"login.h"
+#include"inter.h"
+#include <QApplication>
 
-using namespace std;
-int main()
+int main(int argc, char *argv[])
 {
-    cout <<"helloo"<<endl;
-    return 0;
+    QApplication a(argc, argv);
+    Login *loginlab = new Login;
+    loginlab->show();
+    return a.exec();
 }

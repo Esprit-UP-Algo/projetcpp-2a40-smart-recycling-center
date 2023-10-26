@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>906</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1280</width>
+    <height>1000</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1280</width>
+      <height>832</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../conteneures bg.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="openExternalLinks">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>26</x>
+      <y>112</y>
+      <width>259</width>
+      <height>37</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit
+{
+	border-radius: 15px;
+    
+	background-color : rgba(251, 255, 255, 0.40);
+	background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/chercher.png); 
+    background-position: left;
+	background-repeat: no-repeat;
+	padding-left: 40px;
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 13px;
+    font-weight: bold; 
+} 
+QLineEdit:hover
+{
+	border : 1.5px solid rgba(247, 173, 28, 1);
+}
+QLineEdit:focus
+{
+	border : 1.5px solid rgba(247, 173, 28,1);
+	background-color : rgb(235, 244, 255);
+}</string>
+    </property>
+    <property name="placeholderText">
+     <string>Chercher</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>298</x>
+      <y>112</y>
+      <width>80</width>
+      <height>37</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QComboBox {
+    background-color : rgba(251, 255, 255, 0.40);
+    border-radius: 15px;
+	padding-left:10px;
+	background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/trie.png); 
+    background-position: right;
+	background-repeat: no-repeat;
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 13px;
+    font-weight: bold; 
+	 
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position:  right top; 
+	 border:none;
+}
+QComboBox:hover
+{
+	border : 1.5px solid rgba(247, 173, 28, 1);
+}
+QComboBox:focus
+{
+	border : 1.5px solid rgba(247, 173, 28,1);
+	background-color : rgb(235, 244, 255);
+}</string>
+    </property>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>747</x>
+      <y>162</y>
+      <width>415</width>
+      <height>280</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox {
+	box-shadow: 4px 4px 4px rgba(0,0,0,0.4);
+    border-radius: 36px;
+	border: 3px solid #FCAE19;
+
+	background: rgba(123, 183, 189, 0.80);
+	
+	
+}
+QGroupBox::title:before {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(0, 0, 0, 0.2));
+    z-index: -1;
+}</string>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>-8</y>
+       <width>91</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Barlow Condensed</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>true</italic>
+       <bold>false</bold>
+       <kerning>true</kerning>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QGroupBox QLabel {
+    color: #4A4A4A;
+
+	text-align: center top;
+	text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);	
+	font-family: Barlow Condensed;
+	font-size: 24px;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 130%; 
+	letter-spacing: 0.12px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Ajouter</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="a_code">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>70</y>
+       <width>171</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+	border-radius: 15px;
+    
+	background-color : rgba(251, 255, 255, 0.40);
+
+	padding-left: 10px;
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 13px;
+    font-weight: bold; 
+} 
+QLineEdit:hover
+{
+	border : 1.5px solid rgba(247, 173, 28, 1);
+}
+QLineEdit:focus
+{
+	border : 1.5px solid rgba(247, 173, 28,1);
+	background-color : rgb(235, 244, 255);
+}</string>
+     </property>
+     <property name="placeholderText">
+      <string>Code</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="a_etat">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>120</y>
+       <width>121</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox {
+    background-color : rgba(251, 255, 255, 0.40);
+    border-radius: 15px;
+
+	padding-left:10px;
+	background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/trie.png); 
+    background-position: right;
+	background-repeat: no-repeat;
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 13px;
+    font-weight: bold; 
+	
+	 
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position:  right top; 
+	 border:none;
+}
+QComboBox:hover
+{
+	border : 1.5px solid rgba(247, 173, 28, 1);
+}
+QComboBox:focus
+{
+	border : 1.5px solid rgba(247, 173, 28,1);
+	background-color : rgb(235, 244, 255);
+}
+</string>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <property name="currentText">
+      <string notr="true"/>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="a_taille">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>170</y>
+       <width>121</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox {
+    background-color : rgba(251, 255, 255, 0.40);
+    border-radius: 15px;
+	padding-left:10px;
+	background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/trie.png); 
+    background-position: right;
+	background-repeat: no-repeat;
+
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 13px;
+    font-weight: bold; 
+	 
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position:  right top; 
+	 border:none;
+}
+QComboBox:hover
+{
+	border : 1.5px solid rgba(247, 173, 28, 1);
+}
+QComboBox:focus
+{
+	border : 1.5px solid rgba(247, 173, 28,1);
+	background-color : rgb(235, 244, 255);
+}
+QComboBox::item {
+    color: #4A4A4A; 
+}</string>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bt_ajout">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>230</y>
+       <width>119</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton
+{
+
+	text-align: left;
+    padding-left:15px;
+	border-radius: 10px;
+    
+	background-color : rgb(255, 170, 0);	
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 11px;
+    font-weight: bold; 
+	
+} 
+QPushButton:hover
+{
+	border : 2px solid rgba(247, 173, 28, 1);
+	background-color: rgba(174, 230, 141, 1);
+}
+QPushButton::right-arrow {
+    background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/trie.png); 
+    background-position: right;
+	background-repeat: no-repeat;
+}</string>
+     </property>
+     <property name="text">
+      <string>Enregistrer</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="a_localisation">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>70</y>
+       <width>171</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+	border-radius: 15px;
+    
+	background-color : rgba(251, 255, 255, 0.40);
+
+	padding-left: 10px;
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 13px;
+    font-weight: bold; 
+} 
+QLineEdit:hover
+{
+	border : 1.5px solid rgba(247, 173, 28, 1);
+}
+QLineEdit:focus
+{
+	border : 1.5px solid rgba(247, 173, 28,1);
+	background-color : rgb(235, 244, 255);
+}</string>
+     </property>
+     <property name="placeholderText">
+      <string>Localisation</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>240</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/enregistrer.png); 
+background-repeat: no-repeat;
+border:none;
+background-color : none;</string>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>26</x>
+      <y>181</y>
+      <width>152</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox {
+    border-radius: 36px;
+	border: 3px solid #FCAE19;
+
+	background: rgba(123, 183, 189, 0.80);
+	
+	
+}</string>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QLineEdit" name="m_code">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>111</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+	border-radius: 15px;
+	background-color : rgba(251, 255, 255, 0.40);
+
+	padding-left: 10px;
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 13px;
+    font-weight: bold; 
+} 
+QLineEdit:hover
+{
+	border : 1.5px solid rgba(247, 173, 28, 1);
+}
+QLineEdit:focus
+{
+	border : 1.5px solid rgba(247, 173, 28,1);
+	background-color : rgb(235, 244, 255);
+}</string>
+     </property>
+     <property name="placeholderText">
+      <string>Code..</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bt_supprimer">
+     <property name="geometry">
+      <rect>
+       <x>28</x>
+       <y>90</y>
+       <width>91</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton
+{
+
+	text-align: left;
+    padding-left:10px;
+	border-radius: 10px;
+    
+	background-color : rgb(255, 170, 0);	
+	color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 11px;
+    font-weight: bold; 
+} 
+QPushButton:hover
+{
+	border : 2px solid rgba(247, 173, 28, 1);
+	background-color: rgba(174, 230, 141, 1);
+}
+QPushButton::right-arrow {
+    background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/trie.png); 
+    background-position: right;
+	background-repeat: no-repeat;
+}</string>
+     </property>
+     <property name="text">
+      <string>Supprimer</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bt_modifier">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>130</y>
+       <width>91</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton
+{
+
+	text-align: left;
+    padding-left:10px;
+	border-radius: 10px;
+    
+	background-color : rgb(255, 170, 0);	
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 11px;
+    font-weight: bold; 
+} 
+QPushButton:hover
+{
+	border : 2px solid rgba(247, 173, 28, 1);
+	background-color: rgba(174, 230, 141, 1);
+}
+QPushButton::right-arrow {
+    background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/trie.png); 
+    background-position: right;
+	background-repeat: no-repeat;
+}</string>
+     </property>
+     <property name="text">
+      <string>Modifier</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>170</y>
+       <width>91</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton
+{
+
+	text-align: left;
+    padding-left:10px;
+	border-radius: 10px;
+    
+	background-color : rgb(255, 170, 0);	
+color:rgb(88, 88, 88); 
+    font-family: Arial, sans-serif; 
+    font-size: 11px;
+    font-weight: bold; 
+} 
+QPushButton:hover
+{
+	border : 2px solid rgba(247, 173, 28, 1);
+	background-color: rgba(174, 230, 141, 1);
+}
+QPushButton::right-arrow {
+    background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/trie.png); 
+    background-position: right;
+	background-repeat: no-repeat;
+}</string>
+     </property>
+     <property name="text">
+      <string>Localiser</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="geometry">
+      <rect>
+       <x>87</x>
+       <y>133</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/modification.png); 
+background-repeat: no-repeat;
+border:none;
+background-color : none;</string>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="geometry">
+      <rect>
+       <x>92</x>
+       <y>176</y>
+       <width>21</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/localiser.png); 
+background-repeat: no-repeat;
+border:none;
+background-color : none;</string>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>95</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/contenaire.png); 
+background-repeat: no-repeat;
+border:none;
+background-color : none;</string>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_7">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>1080</x>
+      <y>100</y>
+      <width>71</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/femme ajout.png); 
+background-repeat: no-repeat;
+border:none;
+background-color : none;</string>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QTableView" name="table">
+    <property name="geometry">
+     <rect>
+      <x>203</x>
+      <y>162</y>
+      <width>395</width>
+      <height>280</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableView {
+    border-radius: 36px;
+	border: 3px solid #FCAE19;
+    gridline-color:#FCAE19;
+	background: rgba(123, 183, 189, 0.80);
+
+}
+QHeaderView {
+    background-color:rgba(123, 183, 189, 0);
+    color: rgb(74, 74, 74);
+ border-radius: 36px;
+}
+QHeaderView::section {
+    background-color: #FCAE19;
+    border:1.5px solid #FCAE19;
+ border-radius: 36px;
+    
+}
+</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_8">
+    <property name="geometry">
+     <rect>
+      <x>393</x>
+      <y>118</y>
+      <width>31</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(C:/Users/Lenovo/Desktop/projet c++/icons/pdf.png); 
+background-repeat: no-repeat;
+border:none;
+background-color : none;</string>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

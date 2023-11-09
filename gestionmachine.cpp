@@ -71,5 +71,3 @@ bool Gestionmachine::modifier(int id , QString etat , QString da)
 }
 
 
-
-

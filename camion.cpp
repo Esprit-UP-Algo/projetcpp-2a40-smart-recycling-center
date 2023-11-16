@@ -18,8 +18,8 @@ Camion::Camion(QWidget *parent):QWidget(parent)
     list=new QTableView(tableau);
     ajouter=new QFrame(this);
     ajouter->setGeometry(655,50,back_list.width(),back_list.height());
-    calendrier=new QFrame(this);
-    calendrier->setGeometry(10,342,back_cal.width(),back_cal.height());
+    calendar=new QFrame(this);
+    calendar->setGeometry(10,342,back_cal.width(),back_cal.height());
     stat=new QFrame(this);
     stat->setGeometry(682,342,655,355);
     rechercher=new QFrame(this);
@@ -28,7 +28,7 @@ Camion::Camion(QWidget *parent):QWidget(parent)
     tableau_lab->setPixmap(back_list);*/
     ajouter_lab=new QLabel(ajouter);
     ajouter_lab->setPixmap(back_list);
-    calendrier_lab=new QLabel(calendrier);
+    calendrier_lab=new QLabel(calendar);
     calendrier_lab->setPixmap(back_cal);
     stat_lab=new QLabel(stat);
 
@@ -175,26 +175,54 @@ Camion::Camion(QWidget *parent):QWidget(parent)
 
 
 
-    stat->setStyleSheet("background:transparent;");
-    QPieSeries *series = new QPieSeries();
-    series->setHoleSize(0.35);
-    series->append("Bonne Etat 4.28%",4.28);
-    QPieSlice *slice = series->append("En Cours 15.6%",15.6);
-    slice->setExploded();
-    slice->setLabelVisible();
-    series->append("En Panne 23.8%",23.8);
-    series->append("Others 56.4%",56.4);
-    QChart *chart = new QChart();
-    chart->addSeries(series);
-    chart->setAnimationOptions(QChart::SeriesAnimations);
-    chart->setTheme(QChart::ChartThemeLight);
-    chart->setTitle("DONUT");
-    QBrush transparentBrush(Qt::transparent);
-    chart->setBackgroundBrush(transparentBrush);
-    QChartView *chartview = new QChartView(chart);
-    chartview->setGeometry(0,0,500,300);
-    chartview->setRenderHint(QPainter::Antialiasing);
-    chartview->setParent(stat);
+    stat->hide();
+    float s0, s1,s2;
+            s0 = countType("Bonne Etat");
+            s1 = countType("En Cours");
+            s2 = countType("En Panne");
+
+
+            float status = s0 + s1 +s2 ;
+            float x = (status != 0) ? (s0 * 100) / status : 0.0;
+            float y = (status != 0) ? (s1 * 100) / status : 0.0;
+            float z = (status != 0) ? (s2 * 100) / status : 0.0;
+            QString ch1 = QString("Bonne Etat %1%").arg(x);
+            QString ch2 = QString("En Cours %1%").arg(y);
+            QString ch3 = QString("En Panne %1%").arg(z);
+
+
+            QPieSeries *series = new QPieSeries();
+            QPieSlice *slice = series->append(ch1, x);
+            slice->setLabelVisible();
+            slice->setLabelColor(QColor("#FFFFFF"));
+            slice->setBrush(QColor(165, 255, 113));
+
+
+
+            QPieSlice *slice1 = series->append(ch2, y);
+            slice1->setLabelVisible();
+            slice1->setLabelColor(QColor("#FFFFFF"));
+            slice1->setBrush(QColor(252, 174, 25));
+
+            QPieSlice *slice2 = series->append(ch3, z);
+            slice2->setLabelVisible();
+            slice2->setLabelColor(QColor("#FFFFFF"));
+            slice2->setBrush(QColor(55, 174, 25));
+
+            QChart *chart = new QChart();
+            chart->addSeries(series);
+            chart->setAnimationOptions(QChart::SeriesAnimations);
+            QBrush backgroundBrush(QColor(187, 93, 87, 0));
+            chart->setBackgroundBrush(backgroundBrush);
+
+
+            QChartView *chartview = new QChartView(chart);
+            chartview->setGeometry(0,0,500,300);
+            chartview->setRenderHint(QPainter::Antialiasing);
+            chartview->setParent(stat);
+            stat->setStyleSheet("background:transparent;");
+            stat->show();
+
 
 
     list->setGeometry(0,0,back_list.width(),back_list.height());
@@ -208,20 +236,57 @@ Camion::Camion(QWidget *parent):QWidget(parent)
     QHeaderView* headerView = list->horizontalHeader();
     headerView->setSectionResizeMode(QHeaderView::Stretch);
 
+
+
+
+    histo_btn=new QPushButton(this);
+    histo_btn->setStyleSheet("background:#54cdb7;border-radius:20px;font-size:20px;color:white;");
+    histo_btn->setGeometry(550,0,121,40);
+    histo_btn->setText("Historique");
+    applyShadow(histo_btn);
+
+    histolab=new QLabel(this);
+    histolab->setStyleSheet("background:rgba(255,255,255,0.5);border-radius:20px;");
+    histolab->setPixmap(back_list);
+    histolab->setGeometry(350,300,back_list.width(),back_list.height());
+
+    leave_histo=new QPushButton(histolab);
+    leave_histo->setStyleSheet("background:#FFAE17;border-radius:20px;color:white;font-size:30px;");
+    leave_histo->setGeometry(550,20,40,40);
+    leave_histo->setIcon(QIcon(check));
+
+    historique = new QTableView(histolab);
+    historique->setGeometry(20,20,400,230);
+    historique->setStyleSheet("QTableView {border-radius: 36px;border: 3px solid #FCAE19;gridline-color:#FCAE19;background: rgba(123, 183, 189, 0.80);text-align: center;color:rgb(88, 88, 88); font-family: Arial, sans-serif; font-size: 14px;font-weight: bold; color: rgba(81, 81, 81,0.9);}"
+                    "QHeaderView {background-color:rgba(123, 183, 189, 0);color: rgb(74, 74, 74);font-size: 20px;color: rgb(255, 170, 0);}"
+                    "QHeaderView::section {background-color: transparent;border:0.5px solid transparent;border-radius: 36px;}"
+                        "QTableView QTableCornerButton::section {background-color: transparent;border: none;}");
+    //historique->setModel(afficherHISTO());
+    afficherHISTO();
+    QHeaderView* headerView2 = historique->horizontalHeader();
+    headerView2->setSectionResizeMode(QHeaderView::Stretch);
+    histolab->hide();
+
+
     connect(ajout_btn,&QPushButton::clicked,this,&Camion::enregistrer);
     connect(supp_btn,&QPushButton::clicked,this,&Camion::supp_cam);
     connect(modif_btnBox,&QPushButton::clicked,this,&Camion::modifier_cam);
     connect(modif_btn,&QPushButton::clicked,this,&Camion::affiche_modifpopup);
     connect(exit_modif,&QPushButton::clicked,this,&Camion::exit_modifpopup);
+
+    connect(histo_btn,&QPushButton::clicked,this,&Camion::affiche_histopopup);
+    connect(leave_histo,&QPushButton::clicked,this,&Camion::exit_histapopup);
+
+
     connect(btn_search,&QPushButton::clicked,this,&Camion::Recherher);
     connect(trie,&QPushButton::clicked,this,&Camion::sortData);
     connect(refrech_btn,&QPushButton::clicked,this,&Camion::refreshTable);
     connect(pdf_btn,&QPushButton::clicked,this,&Camion::showpdf);
+
+    Calendrier *reg = new Calendrier(calendar);
+    reg->move(0,0);
 }
-/*void Camion::init()
-{
-     connect(info_modif2[0], QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Camion::on_mid_currentIndexChanged);
-}*/
+
 Camion::Camion(QString mat,QString etat,QString dispo,QString desti,int nb_ent,QDate d,QString note)
 {
     this->matricule=mat;
@@ -300,6 +365,9 @@ void Camion::enregistrer()
                                         bool test=c.ajouter_cam();
                                             if(test)
                                             {
+                                                QDateTime tempsActuel = QDateTime::currentDateTime(); // Récupérer le temps actuel
+                                                   QString tempsAjout = tempsActuel.toString("dd/MM/yyyy hh:mm:ss"); // Formatage du temps
+                                                   c.ecrireDansFichier1(matricule, tempsAjout);
                                                  QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("Ajout successful.\n""Click cancel to exit."),QMessageBox::Cancel);
                                                  list->setModel(c.afficher());
                                                  info_ajout1[0]->clear();
@@ -347,6 +415,9 @@ void Camion::supp_cam()
              QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("Suppression successful.\n""Click cancel to exit."),QMessageBox::Cancel);
             list->setModel(c1.afficher());
             remplir_combo(mat_supp);
+            QDateTime tempsActuel = QDateTime::currentDateTime(); // Récupérer le temps actuel
+               QString tempsSuppression = tempsActuel.toString("dd/MM/yyyy hh:mm:ss"); // Formatage du temps
+               c1.ecrireDansFichier(c1.getMatricule(), tempsSuppression);
         }
         else
         {
@@ -395,7 +466,7 @@ bool Camion :: update_cam(QString mat)
 void Camion ::modifier_cam()
 {
     Camion c;
-        c.setMatricule(info_modif2[0]->currentText());
+        c.setMatricule(mat_supp->currentText());
         c.setEtat(info_modif2[1]->currentText());
         c.setDisponibilite(info_modif2[2]->currentText());
         c.setDestination(info_modif1[0]->text());
@@ -406,6 +477,9 @@ void Camion ::modifier_cam()
         {
             QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("Modification successful.\n""Click cancel to exit."),QMessageBox::Cancel);
              list->setModel(c.afficher());
+             QDateTime tempsActuel = QDateTime::currentDateTime(); // Récupérer le temps actuel
+                QString tempsDeMiseAjour = tempsActuel.toString("dd/MM/yyyy hh:mm:ss"); // Formatage du temps
+                c.ecrireDansFichier2(c.getMatricule(), tempsDeMiseAjour);
         }
         else {
              QMessageBox::critical(nullptr,QObject::tr("Not OK"),QObject::tr("Modification failed.\n""Click cancel to exit."),QMessageBox::Cancel);
@@ -425,62 +499,46 @@ void Camion::remplir_combo(QComboBox *mat_supp)
                           mat_supp->addItem(mat);}
 }
 
-void Camion::updateUI(int selectedMat)
-{
-
-    QSqlQuery query;
-    QString matr=info_modif2[0]->itemText(selectedMat);
-
-    query.prepare("SELECT  etat, disponibilite,DESTINATION,NB_ENTRETIEN,DATE_ENTRETIEN,NOTE FROM camion WHERE matricule = :mat");
-    query.bindValue(":mat", matr);
-
-    if (query.exec() && query.next()) {
-        QString etat = query.value(0).toString();
-        QString dispo = query.value(1).toString();
-        QString dest = query.value(2).toString();
-        QString nb = query.value(3).toString();
-        QDate date = query.value(4).toDate();
-        QString note = query.value(5).toString();
 
 
-        info_modif1[0]->setText(dest);
-        info_modif1[1]->setText(nb);
-        info_modif1[2]->setText(note);
 
-
-        int index = info_modif2[1]->findText(etat);
-        if (index != -1) {
-            info_modif2[1]->setCurrentIndex(index);
-        }
-         index = info_modif2[2]->findText(dispo);
-        if (index != -1) {
-            info_modif2[2]->setCurrentIndex(index);
-        }
-
-        date_modif->setDate(date);
-
-    }
-}
-
-/*void Camion::on_mid_currentIndexChanged(int index)
-{
-    // Get the selected ID from the combo box
-   // int selectedId = info_modif2[0]->itemText(index).toInt();
-
-    // Call the function to update the UI with the selected ID's data
-    updateUI(index);
-
-    // Show the appropriate UI elements
-    affiche_modifpopup();
-}*/
 void Camion::affiche_modifpopup() {
     if (modif_lab->isHidden()) {
         modif_lab->show();
-        remplir_combo(info_modif2[0]);
-        int  mtr=info_modif2[0]->currentIndex();
-        updateUI(mtr);
+
+        QSqlQuery query;
+        QString matr = mat_supp->currentText();
+
+        query.prepare("SELECT  etat, disponibilite, DESTINATION, NB_ENTRETIEN, DATE_ENTRETIEN, NOTE FROM camion WHERE matricule = :mat");
+        query.bindValue(":mat", matr);
+
+        if (query.exec() && query.next()) {
+            QString etat = query.value("etat").toString();
+            QString dispo = query.value("disponibilite").toString();
+            QString dest = query.value("DESTINATION").toString();
+            QString nb = query.value("NB_ENTRETIEN").toString();
+            QDate date = query.value("DATE_ENTRETIEN").toDate();
+            QString note = query.value("NOTE").toString();
+
+            info_modif1[0]->setText(dest);
+            info_modif1[1]->setText(nb);
+            info_modif1[2]->setText(note);
+            info_modif2[1]->setCurrentText(etat);
+            info_modif2[2]->setCurrentText(dispo);
+            date_modif->setDate(date);
+        }
     } else {
         modif_lab->hide();
+    }
+}
+
+void Camion::affiche_histopopup() {
+    if (histolab->isHidden()) {
+        histolab->show();
+
+
+    } else {
+        histolab->hide();
     }
 }
 
@@ -491,7 +549,13 @@ void Camion::exit_modifpopup() {
         modif_lab->show();
     }
 }
-
+void Camion::exit_histapopup() {
+    if (histolab->isVisible()) {
+        histolab->hide();
+    } else {
+        histolab->show();
+    }
+}
 
 void Camion::sortData() {
     QSqlQueryModel* sortedModel = new QSqlQueryModel();
@@ -577,5 +641,125 @@ int Camion::countType(const QString& etat)
         count = query.value(0).toInt();
     }
 
+
     return count;
 }
+
+
+
+
+void Camion ::ecrireDansFichier(const QString& matricule, const QString& tempsSuppression)
+{
+    QString nomFichier = "C:/Users/benam/OneDrive/Documents/ESPRIT 2A40/Projet C++/QT/interface22/HISTORIQUE.txt";
+    QFile file(nomFichier);
+
+    if (file.open(QIODevice::Append | QIODevice::Text)) {
+        QTextStream stream(&file);
+        stream <<"SUPPRESSION:"<< "matricule : " << matricule << ", Temps de suppression : " << tempsSuppression << "\n";
+        file.close();
+    } else {
+        // Gérer les erreurs d'ouverture de fichier
+    }
+}
+void Camion ::ecrireDansFichier1(const QString& matricule, const QString& tempsAjout)
+{
+    QString nomFichier = "C:/Users/benam/OneDrive/Documents/ESPRIT 2A40/Projet C++/QT/interface22/HISTORIQUE.txt";
+    QFile file(nomFichier);
+
+    if (file.open(QIODevice::Append | QIODevice::Text)) {
+        QTextStream stream(&file);
+        stream <<"AJOUT :"<< "matricule : " << matricule << ", Temps de l'ajout : " << tempsAjout << "\n";
+        file.close();
+    } else {
+        // Gérer les erreurs d'ouverture de fichier
+    }
+}
+void Camion ::ecrireDansFichier2(const QString& matricule, const QString& tempsDeMiseAjour)
+{
+    QString nomFichier = "C:/Users/benam/OneDrive/Documents/ESPRIT 2A40/Projet C++/QT/interface22/HISTORIQUE.txt";
+    QFile file(nomFichier);
+
+    if (file.open(QIODevice::Append | QIODevice::Text)) {
+        QTextStream stream(&file);
+        stream <<"MISE A JOUR  :"<< "matricule : " << matricule << ", Temps de l'ajout : " << tempsDeMiseAjour << "\n";
+        file.close();
+    } else {
+        // Gérer les erreurs d'ouverture de fichier
+    }
+}
+void Camion::afficherHISTO()
+{
+    QString modelHeader;
+    modelHeader = "Historique";
+    QFile file("C:/Users/benam/OneDrive/Documents/ESPRIT 2A40/Projet C++/QT/interface22/HISTORIQUE.txt");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream(&file);
+        QString fileContent = stream.readAll();
+        file.close();
+
+        if (fileContent.isEmpty()) {
+            QMessageBox::information(this, "Empty", "The file is empty.");
+        } else {
+            QStringList rows = fileContent.split("\n");
+            QStandardItemModel *model = new QStandardItemModel(this);
+            model->setColumnCount(1);
+
+            for (const QString &row : rows) {
+                QStandardItem *item = new QStandardItem(row);
+                model->appendRow(item);
+            }
+
+            model->setHeaderData(0, Qt::Horizontal, QObject::tr(modelHeader.toUtf8().constData()));
+
+            historique->setModel(model);
+            historique->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            historique->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        }
+    } else {
+        QMessageBox::warning(this, "Error", "Failed to open the file.");
+    }
+}
+/*void MainWindow::onComboBoxhistorique(int index)
+{
+    QString selectedOption = ui->afficher_historique->itemText(index);
+    QString filePath;
+QString modelHeader;
+    if (selectedOption == "ajout") {
+        filePath = "/Users/Msi/OneDrive/Bureau/ajout.txt";
+        modelHeader = "AJOUT";
+    } else if (selectedOption == "modification") {
+        filePath = "/Users/Msi/OneDrive/Bureau/modification.txt";
+        modelHeader = "MODIFICATION";
+    } else if (selectedOption == "suppression") {
+        filePath = "/Users/Msi/OneDrive/Bureau/suppression.txt";
+        modelHeader = "SUPPRESSION";
+    }
+
+    QFile file(filePath);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream(&file);
+        QString fileContent = stream.readAll();
+        file.close();
+
+        if (fileContent.isEmpty()) {
+            QMessageBox::information(this, "Empty", "The file is empty.");
+        } else {
+            QStringList rows = fileContent.split("\n");
+            QStandardItemModel *model = new QStandardItemModel(this);
+            model->setColumnCount(1);
+
+            for (const QString &row : rows) {
+                QStandardItem *item = new QStandardItem(row);
+                model->appendRow(item);
+            }
+
+            model->setHeaderData(0, Qt::Horizontal, QObject::tr(modelHeader.toUtf8().constData()));
+
+            ui->tableView_historique->setModel(model);
+            ui->tableView_historique->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            ui->tableView_historique->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        }
+    } else {
+        QMessageBox::warning(this, "Error", "Failed to open the file.");
+    }
+}*/

@@ -1,149 +1,244 @@
-#include "inter.h"
-#include"login.h"
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QGraphicsWidget>
-#include <QGraphicsRotation>
-#include <QPropertyAnimation>
-#include<QParallelAnimationGroup>
-#include<QSequentialAnimationGroup>
-#include<QObject>
-#include <QWidget>
-#include <QScrollArea>
-#include <QVBoxLayout>
-#include <QApplication>
-#include<QPixmap>
-#include<QLabel>
-#include<QLineEdit>
-#include<QPushButton>
-#include <QGraphicsDropShadowEffect>
-#include<QList>
-#include<QDebug>
-Inter::Inter(QMainWindow  *loginlab , QWidget *parent)
-    :QMainWindow(parent),loginlab(loginlab)
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include"personnel.h"
+#include<QString>
+#include "QStandardItemModel"
+#include "QSqlQueryModel"
+#include <QFont>
+#include <QPalette>
+#include <QStandardItemModel>
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
-    this->resize(1280,832);
-    this->setStyleSheet("background:white;");
+    ui->setupUi(this);
+    ui->tab_etudiant->setModel(P.afficher());
 
-    QFrame *box = new QFrame(this);
-    box->setStyleSheet("background:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:1 #1890a1, stop:0.5 #54cdb7);");
-    box->setGeometry(0,110,1280,682);
-    gest_camions = new QPushButton("Gest des camions",this);
-    gest_camions->setStyleSheet("background:#1890a1;border-radius:10px;color:white;font-size:20px;font-family:Arial;");
-    gest_camions->setGeometry(100,85,200,30);
-    gest_contenaire = new QPushButton("Gest de conteneurs",this);
-    gest_contenaire->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_contenaire->setGeometry(310,85,200,30);
-    gest_personelle = new QPushButton("Gest du personnel",this);
-    gest_personelle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_personelle->setGeometry(520,85,200,30);
-    gest_dons = new QPushButton("Gest des dons",this);
-    gest_dons->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_dons->setGeometry(730,85,200,30);
-    gest_matrielle = new QPushButton("Gest des matériaux recyclés",this);
-    gest_matrielle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_matrielle->setGeometry(940,85,270,30);
+        Personnel P; // Créez une instance de la classe Fournisseur
+        QSqlQueryModel* model = P.afficher(); // Appelez la méthode sur l'instance créée
 
-    /*QFrame *boxx = new QFrame(box);
-    QHBoxLayout *layout = new QHBoxLayout(boxx);*/
+        QStandardItemModel* styledModel = new QStandardItemModel(model->rowCount(), model->columnCount(), this);
+
+        for (int row = 0; row < model->rowCount(); ++row) {
+            for (int col = 0; col < model->columnCount(); ++col) {
+                QModelIndex index = model->index(row, col);
+                QStandardItem* item = new QStandardItem(model->data(index).toString());
+                styledModel->setItem(row, col, item);
+
+                if (col == 0) { // Colonne "Id_FOURNISSEUR"
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
+
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
 
 
-    QLineEdit *recherche=new QLineEdit(this);
-    recherche->setPlaceholderText("Rechercher");
-    recherche->setStyleSheet("background:#54cdb7;border-top-right-radius:20px;border-bottom-right-radius:20px;");
-    recherche->setGeometry(100,170,240,50);
 
-    QPixmap icon(":/symbole-de-linterface-de-recherche.png");
+                if (col == 1) {
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
 
-    QPushButton *bow=new QPushButton(this);
-    bow->setStyleSheet("background:#54cdb7;border-top-left-radius:20px;border-bottom-left-radius:20px;color:white;font-size:30px;font-family:Arial;");
-    bow->setIcon(QIcon(icon));
-    bow->setGeometry(50,170,50,50);
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
 
-    QPushButton *ajout = new QPushButton("Trier",this);
-    ajout->setStyleSheet("background:#54cdb7;border-radius:20px;");
-    ajout->setGeometry(380,170,100,50);
+                if (col == 2) {
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
 
-    QPushButton *pdf=new QPushButton(this);
-    pdf->setStyleSheet("background:#54cdb7;border-top-left-radius:20px;border-radius:20px;color:white;font-size:30px;font-family:Arial;");
-    pdf->setIcon(QIcon(icon));
-    pdf->setGeometry(520,170,50,50);
-   /* layout->addWidget(bow);
-    layout->addWidget(recherche);
-    boxx->setLayout(layout);*/
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
 
-    QPixmap leave(":/se-deconnecter.png");
 
-    QPushButton *btn_leave=new QPushButton(this);
-    btn_leave->setStyleSheet("background:#54cdb7;border-radius:20px;color:white;font-size:30px;font-family:Arial;");
-    btn_leave->setIcon(QIcon(leave));
-    btn_leave->setGeometry(1220,15,50,50);
+                if (col == 3) { // Colonne "Id_FOURNISSEUR"
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
 
-     connect(btn_leave, &QPushButton::clicked, this, &Inter::leave_sign);
-     connect(gest_contenaire,&QPushButton::clicked,this,&Inter::change_cont);
-     connect(gest_camions,&QPushButton::clicked,this,&Inter::change_cami);
-     connect(gest_personelle,&QPushButton::clicked,this,&Inter::change_perso);
-     connect(gest_dons,&QPushButton::clicked,this,&Inter::change_dons);
-     connect(gest_matrielle,&QPushButton::clicked,this,&Inter::change_mat);
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
+
+                if (col == 4) { // Colonne "Id_FOURNISSEUR"
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
+
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
+
+                if (col == 5) { // Colonne "Id_FOURNISSEUR"
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
+
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
+
+
+                if (col == 6) { // Colonne "Id_FOURNISSEUR"
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
+
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
+
+
+                if (col == 7) { // Colonne "Id_FOURNISSEUR"
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
+
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
+
+
+                if (col == 8) { // Colonne "Id_FOURNISSEUR"
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
+
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
+
+
+                if (col == 9) { // Colonne "Id_FOURNISSEUR"
+                    QFont font("Arial");
+                    font.setPointSize(10);
+                    font.setWeight(QFont::Bold); // Utiliser Bold pour la police en gras
+                    font.setStyle(QFont::StyleItalic);
+                    item->setFont(font);
+
+                    QPalette palette;
+                    palette.setColor(QPalette::Text, QColor("#07bdff")); // Couleur du texte
+                    item->setForeground(palette.color(QPalette::Text));
+                }
+            }
+        }
+
+        // Appliquer le modèle personnalisé à votre QTableView
+        ui->tab_etudiant->setModel(styledModel);
 }
-void Inter::leave_sign()
+
+MainWindow::~MainWindow()
 {
-    this->hide();
-    loginlab->show();
+    delete ui;
 }
-void Inter::change_cont()
+void MainWindow::on_pb_ajouter_clicked()
 {
-    gest_camions->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_personelle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_dons->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_matrielle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_contenaire->setStyleSheet("background:#1890a1;border-radius:10px;color:white;font-size:20px;font-family:Arial;");
+    QString nom=ui->le_nom->text();
+    QString prenom=ui->le_prenom->text();
+    QString cin=ui->le_cin->text();
+    QString age=ui->le_age->text();
+    QString email=ui->le_email->text();
+    QString role=ui->le_role->text();
+    QString statut=ui->le_statut->text();
+    QString telephone=ui->le_telephone->text();
+    QString sexe=ui->le_sexe->text();
+    QString salaire=ui->le_salaire->text();
+    // Vérifier que les champs NOM et PRENOM ne contiennent pas de chiffres
+        QRegExp regex(".*\\d+.*"); // Expression régulière pour rechercher des chiffres
+        if (nom.contains(regex) || prenom.contains(regex)) {
+            QMessageBox::critical(this, "Erreur de saisie", "Les champs Nom et Prénom ne doivent pas contenir de chiffres.");
+            return;
+        }
+    Personnel P(nom ,prenom ,cin ,age ,email,role,statut,telephone,sexe,salaire);
+    /*if (QString::number(age).length() < 2)
+            {
+                QMessageBox::warning(nullptr, QObject::tr("Erreur d'ajout"), QObject::tr("L'ID doit comporter au moins 4 chiffres."), QMessageBox::Cancel);
+                return;
+            }
+        if (age < 18 || age >62)
+            {
+                QMessageBox::warning(nullptr, QObject::tr("Erreur de saisie"), QObject::tr("Le point de suivi doit être un entier entre 0 et 5."), QMessageBox::Cancel);
+                return;
+            }*/
+
+    bool test=P.ajouter();
+    if (test) {
+        // L'ajout a réussi, vous pouvez afficher un message de succès
+        QMessageBox::information(this, "Succès", "Les informations du personnel ont été ajoutées avec succès.");
+        ui->tab_etudiant->setModel(P.afficher());
+    } else {
+        // L'ajout a échoué, vous pouvez afficher un message d'erreur
+        QMessageBox::critical(this, "Erreur", "Échec de l'ajout des informations du personnel.");
+    }
 }
-void Inter::change_cami()
+
+void MainWindow::on_pushButton_clicked()
 {
-    gest_personelle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_contenaire->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_dons->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_matrielle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_camions->setStyleSheet("background:#1890a1;border-radius:10px;color:white;font-size:20px;font-family:Arial;");
+
+        Personnel P1;
+        P1.setcin(ui->le_id_sup->text());
+        bool test=P1.supprimer(P1.getcin());
+        QMessageBox msgBox;
+
+        if(test)
+             {msgBox.setText("suppression avec succes.");
+        ui->tab_etudiant->setModel(P.afficher());
+        }
+        else
+            msgBox.setText("Le personnel avec l'ID " + P1.getcin() + " n'existe pas.");
+            msgBox.exec();
+
 }
-void Inter::change_perso()
+void MainWindow::on_pb_modifier_clicked()
 {
-    gest_contenaire->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_camions->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_dons->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_matrielle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_personelle->setStyleSheet("background:#1890a1;border-radius:10px;color:white;font-size:20px;font-family:Arial;");
+    QString id = ui->le_cin_2->text();
+    QString nouveauNom = ui->le_nom_2->text();
+    QString nouveauPrenom = ui->le_prenom_2->text();
+    QString nouveauAge = ui->le_age->text();
+    Personnel P1;
 
+    bool test=P1.modifier(id, nouveauNom, nouveauPrenom ,nouveauAge);
+    if(test)
+    {
+        QMessageBox::information(this, "Modification réussie", "Le personnel a été modifié avec succès.");
+
+        // Mettez à jour le modèle de votre QTableView
+        ui->tab_etudiant->setModel(P.afficher());
+    }
+    else
+    {
+        QMessageBox::warning(this, "Erreur de modification", "Erreur lors de la modification du personnel.");
+    }
 }
-void Inter::change_dons()
-{
-    gest_contenaire->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_camions->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_personelle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_matrielle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_dons->setStyleSheet("background:#1890a1;border-radius:10px;color:white;font-size:20px;font-family:Arial;");
-}
-void Inter::change_mat()
-{
-    gest_contenaire->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_camions->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_personelle->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_dons->setStyleSheet("background:transparent;color:#1890a1;font-size:20px;font-family:Arial;");
-    gest_matrielle->setStyleSheet("background:#1890a1;border-radius:10px;color:white;font-size:20px;font-family:Arial;");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

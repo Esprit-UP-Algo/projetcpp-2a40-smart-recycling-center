@@ -1,32 +1,24 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-#include <QMainWindow>
-#include <QObject>
-#include <QWidget>
-#include"inter.h"
-class QLabel;
-class QPushButton;
-class QLineEdit;
-class QPixmap;
-class PopupWindow;
-class Login : public QMainWindow
+#include <QDialog>
+
+namespace Ui {
+class login;
+}
+
+class login : public QDialog
 {
     Q_OBJECT
+
 public:
-    Login(QWidget *parent = nullptr);
-    void applyShadow(QWidget *widget);
-public slots:
-    void showPopup();
-    void type_password();
+    explicit login(QWidget *parent = nullptr);
+    ~login();
+private slots:
+    void on_pb_seconnecter_clicked();
+
 private:
-    //Inter *inWindow;
-    QLabel *openlab;
-    QLabel *closelab;
-    QLabel *login;
-    QLineEdit *userEdit;
-    QLineEdit *passEdit;
-    QPushButton *confirmbtn;
+    Ui::login *ui;
 };
 
 #endif // LOGIN_H

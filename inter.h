@@ -1,32 +1,33 @@
-#ifndef INTER_H
-#define INTER_H
-#include"login.h"
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+#include <QDialog>
 #include <QMainWindow>
-#include <QMainWindow>
-#include <QObject>
-#include <QWidget>
-class QPushButton;
-class QLabel;
-class QLineEdit;
-class Inter : public QMainWindow
+#include<QMessageBox>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
+#include "personnel.h"
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
+
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
-public:
-    Inter(QMainWindow  *loginlab,QWidget *parent = nullptr);
-private:
-    QMainWindow *loginlab;
-    QPushButton *gest_camions;
-    QPushButton *gest_contenaire;
-    QPushButton *gest_personelle;/* el patron*/
-    QPushButton *gest_dons;
-    QPushButton *gest_matrielle;
-public slots:
-    void leave_sign();
-    void change_cont();
-    void change_cami();
-    void change_perso();
-    void change_dons();
-    void change_mat();
-};
 
-#endif // INTER_H
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+private slots:
+    void on_pb_ajouter_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_pb_modifier_clicked();
+
+private:
+    Ui::MainWindow *ui;
+    Personnel P;
+};
+#endif // MAINWINDOW_H

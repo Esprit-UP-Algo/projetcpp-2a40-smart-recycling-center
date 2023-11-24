@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>CLOSE.png</file>
+        <file>les-yeux-croises (1).png</file>
+        <file>les-yeux-croises.png</file>
+        <file>login (1).png</file>
+        <file>login.png</file>
+        <file>oeil (1).png</file>
+        <file>oeil.png</file>
+        <file>open.png</file>
+        <file>se-deconnecter (1).png</file>
+        <file>se-deconnecter.png</file>
+        <file>symbole-de-linterface-de-recherche.png</file>
+    </qresource>
+</RCC>

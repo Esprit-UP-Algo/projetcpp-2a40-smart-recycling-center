@@ -2,45 +2,55 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "materiau.h"
+#include <QMainWindow>
 #include <QInputDialog>
 #include <QStringList>
 #include <QDebug>
 #include <QPdfWriter>
 #include <QFileDialog>
-#include <QPrinter>
 #include <QPainter>
 #include <QTextDocument>
 #include <QTimer>
-
-namespace Ui {
-class MainWindow;
-}
+#include <QBarSeries>
+#include "materiaux.h"
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
     void on_pb_ajouter_clicked();
 
-    void on_pb_supprimer_clicked();
-
     void on_pb_modifier_clicked();
 
-    void on_pushButton_clicked();
-    //void imprimerTable();
+    void on_pb_chercher_clicked();
 
     void on_pb_pdf_clicked();
+    void exportToPDF();
+
+    void on_le_stat_clicked();
+
+    void on_pb_trier_clicked();
+
+    void on_pb_supprimer_clicked();
+
+    void on_pb_imprimer_clicked();
+    void exportToWord();
+
+    void on_pb_word_clicked();
+
+    void on_pb_inserer_clicked();
 
 private:
     Ui::MainWindow *ui;
-    Materiau M;
-
+    Materiaux M;
+    QTimer *timerAlerte;
 };
-
 #endif // MAINWINDOW_H

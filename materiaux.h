@@ -1,31 +1,59 @@
-#ifndef ETUDIANT_H
-#define ETUDIANT_H
-#include <QString>
-#include <QSqlQueryModel>
-#include <QSqlQuery>
+#ifndef MATERIAUX_H
+#define MATERIAUX_H
+
+#include <QMainWindow>
 #include <QObject>
+#include <QWidget>
+#include <QString>
+#include <QMainWindow>
+#include <QInputDialog>
+#include <QStringList>
+#include <QDebug>
+#include <QPdfWriter>
+#include <QFileDialog>
+#include <QPainter>
+#include <QTextDocument>
+#include <QTimer>
+#include<QSqlQueryModel>
+#include <QPrintDialog>
+#include <QTableView>
+#include <QMap>
+#include <QTimer>
 
-
-class Etudiant
+class Materiaux
 {
 public:
-    Etudiant();
-    Etudiant(int,QString,QString);
+    Materiaux();
+    Materiaux(int,QString,int,QString,int);
     int getid();
-    QString getnom();
-    QString getprenom();
+    QString gettype();
+    int getquantite();
+    QString getdestination();
+    int getpointdesuivi();
+    QString getreception_de_la_demande();
+    QString getetat();
     void setid(int);
-    void setnom(QString);
-    void setprenom(QString);
+    void settype(QString);
+    void setquantite(int);
+    void setdestination(QString);
+    void setpointdesuivi(int);
     bool ajouter();
-    QSqlQueryModel *afficher();
+    bool rechercherParId(int id);
+    QSqlQueryModel* afficher();
+    bool modifier(int id, QString nouveauType, int nouveauQuantite, QString nouveauDestination, int nouveauPointdesuivi);
+    QSqlQueryModel* chercher_Materiaux(int id);
+    QSqlQueryModel* tri();
     bool supprimer(int id);
-    bool modifier(int id, QString nouveauNom, QString nouveauPrenom);
+    QList<int> getIds();
+    bool choisirIdASupprimer();
+    void imprimerTableau(QTableView *tableView);
+    QMap<QString, int> getStatistiquesParType();
 
 
 private:
-    int id;
-    QString nom,prenom;
+    QString type,destination;
+    int id, quantite,pointdesuivi;
+
 };
 
-#endif // ETUDIANT_H
+#endif // MATERIAUX_H

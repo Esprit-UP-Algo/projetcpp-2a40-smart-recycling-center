@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Image/Ajouter.png</file>
+        <file>Image/electronique.png</file>
+        <file>Image/Group 221 (1).png</file>
+        <file>Image/materiaux (3).png</file>
+        <file>Image/materiaux.png</file>
+        <file>Image/metale.png</file>
+        <file>Image/Modifier.png</file>
+        <file>Image/organique.png</file>
+        <file>Image/papier.png</file>
+        <file>Image/plastique.png</file>
+        <file>Image/rect1.png</file>
+        <file>Image/rect2.png</file>
+        <file>Image/Rectangle 102.png</file>
+        <file>Image/Rectangle 68.png</file>
+        <file>Image/verre.png</file>
+        <file>../../Bureau/Image/Vector.png</file>
+        <file>../../../Downloads/🦆 icon _media play_.png</file>
+        <file>../../Bureau/Image/🦆 icon _magnifying glass_ (1).png</file>
+        <file>../../../Downloads/Supprimer.png</file>
+        <file>../../../Downloads/Arrow 3.png</file>
+        <file>../../../Downloads/Ellipse 47.png</file>
+        <file>../../../Downloads/Suivre la livraison.png</file>
+        <file>../../../Downloads/girl_5_.png</file>
+        <file>../../../Downloads/🦆 icon _x letter_ (1).png</file>
+        <file>../../../Downloads/Statistique.png</file>
+    </qresource>
+</RCC>

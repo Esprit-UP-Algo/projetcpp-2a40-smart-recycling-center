@@ -29,6 +29,7 @@
 #include <QtCharts>
 #include <QAxObject>
 #include <QSqlRecord>
+#include "arduino.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -38,6 +39,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->le_id->setValidator(new QIntValidator(100, 9999, this));
     ui->tab_materiau->show();
+    int ret=A.connect_arduino(); // lancer la connexion à arduino
+    switch(ret){
+    case(0):qDebug()<< "arduino is available and connected to : "<< A.getarduino_port_name();
+        break;
+    case(1):qDebug() << "arduino is available but not connected to :" <<A.getarduino_port_name();
+       break;
+    case(-1):qDebug() << "arduino is not available";
+    }
+     QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(update_label())); // permet de lancer
+     //le slot update_label suite à la reception du signal readyRead (reception des données).
     QString css="border: 2px solid #8f8f91;"
                 "border-radius: 10px;"  // Coins arrondis
                 "padding: 2px 4px;"  // Rembourrage pour éviter le texte collé au bord
@@ -114,6 +125,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->le_destination_m->setPlaceholderText("Destination");
     ui->le_pointdesuivi_m->setPlaceholderText("Pointdesuivi");
     ui->le_id_s->setPlaceholderText("ID");
+    ui->le_id_envoyer->setPlaceholderText("ID");
 
     ui->le_id->setStyleSheet(css);
     ui->le_type->setStyleSheet(css);
@@ -139,6 +151,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pb_word->setStyleSheet(cssbtn);
     ui->tab_materiau->setModel(M.afficher());
     ui->tab_materiau->resizeColumnsToContents();
+    ui->le_id_envoyer->setStyleSheet(css);
+    ui->pb_envoyer->setStyleSheet(cssbtn);
 
 
 }
@@ -627,4 +641,117 @@ void MainWindow::on_pb_inserer_clicked()
        // Afficher l'image dans le QLabel ou autre widget que vous utilisez pour afficher l'image
        ui->labelimage->setPixmap(image);
        ui->labelimage->setScaledContents(true);
+}
+/*void MainWindow::updateDatabase(int id, int capteur)
+{
+    // Mettre à jour la base de données avec le point de suivi du capteur
+    if (M.modifier(id, "", 0, "", capteur)) {
+        QMessageBox::information(this, tr("Mise à jour de la base de données"), tr("Base de données mise à jour avec succès."));
+    } else {
+        QMessageBox::warning(this, tr("Erreur de mise à jour de la base de données"), tr("Erreur lors de la mise à jour de la base de données."));
+    }
+}*/
+
+/*void MainWindow::on_pb_envoyer_clicked()
+{
+    envoyerEtLire();
+ }*/
+
+/*void MainWindow::envoyerEtLire()
+{
+    bool ok;
+    int id = ui->le_id_envoyer->text().toInt(&ok);
+
+    if (!ok) {
+        QMessageBox::warning(this, tr("Erreur d'envoi"), tr("Veuillez entrer un ID valide."), QMessageBox::Cancel);
+        return;
+    }
+
+    // Vérifiez si l'ID existe avant de tenter de suivre
+    if (!M.rechercherParId(id)) {
+        QMessageBox::warning(this, tr("Erreur d'envoi"), tr("L'ID n'existe pas dans la base de données."), QMessageBox::Cancel);
+        return;
+    }
+
+    // Envoyer un signal à l'Arduino pour indiquer le suivi
+    if (A.getserial()->isOpen() && A.getserial()->isWritable()) {
+        A.write_to_arduino("S");  // Vous pouvez choisir un caractère ou un code spécifique pour indiquer le suivi
+    } else {
+        QMessageBox::warning(this, tr("Erreur d'envoi"), tr("Échec de l'envoi du signal de suivi à l'Arduino."), QMessageBox::Cancel);
+        return;
+    }
+
+    // Attendre quelques secondes pour la détection du capteur
+    QTimer::singleShot(5000, this, [this, id]() {
+        // Lecture de la réponse de l'Arduino
+        QByteArray response = A.read_from_arduino();
+        qDebug() << "Réponse de l'Arduino : " << response;
+
+        if (!response.isEmpty()) {
+            bool ok;
+            int detectedSensor = response.toInt(&ok);
+
+            if (ok) {
+                qDebug() << "Numéro de capteur détecté : " << detectedSensor;
+
+                // Obtenir le point de suivi actuel
+                int currentPointSuivi = M.getpointdesuivi(id);
+
+                if (detectedSensor >= 1 && detectedSensor <= 4 && detectedSensor != currentPointSuivi) {
+                    // Mettez à jour la base de données avec le nouveau point de suivi
+                    if (M.modifier(id, "", 0, "", detectedSensor)) {
+                        QMessageBox::information(this, tr("Capteur détecté"), tr("Le capteur ") + QString::number(detectedSensor) + tr(" est détecté et le point de suivi a été mis à jour dans la base de données."));
+                    } else {
+                        QMessageBox::warning(this, tr("Erreur de base de données"), tr("Échec de la mise à jour du point de suivi dans la base de données."));
+                    }
+                } else {
+                    if (detectedSensor == currentPointSuivi) {
+                        QMessageBox::information(this, tr("Capteur déjà détecté"), tr("Le capteur ") + QString::number(detectedSensor) + tr(" est déjà détecté."));
+                    } else {
+                        QMessageBox::warning(this, tr("Erreur de capteur"), tr("Numéro de capteur invalide ou aucun capteur détecté."));
+                    }
+                }
+            } else {
+                qDebug() << "Conversion de la réponse en entier échouée.";
+                QMessageBox::warning(this, tr("Erreur de conversion"), tr("Échec de la conversion du numéro de capteur."), QMessageBox::Cancel);
+            }
+        }
+    });
+}*/
+
+void MainWindow::update_label()
+{
+    QSqlQuery query;
+    data=A.read_from_arduino();
+    qDebug()<<"data = "<< data;
+     if(data=="1")
+     {
+            query.prepare("UPDATE materiau SET pointdesuivi='1' WHERE id = '6666'");
+            query.exec();
+            ui->tab_materiau->setModel(M.afficher());
+        //ui->message->setText("le point de suivi est 1"); // si les données reçues de arduino via la liaison série sont égales à 1
+    // alors afficher ON
+    }
+    else if (data=="2")
+            {
+                query.prepare("UPDATE materiau SET pointdesuivi='2' WHERE id = '6666'");
+                query.exec();
+                ui->tab_materiau->setModel(M.afficher());
+            }
+        //ui->message->setText("le point de suivi est 2");   // si les données reçues de arduino via la liaison série sont égales à 0
+    else if (data=="3")
+                 {
+                    query.prepare("UPDATE materiau SET pointdesuivi='3' WHERE id = '6666'");
+                    query.exec();
+                    ui->tab_materiau->setModel(M.afficher());
+                }
+        //ui->message->setText("le point de suivi est 3");
+    else if (data=="4")
+                    {
+                        query.prepare("UPDATE materiau SET pointdesuivi='4' WHERE id = '6666'");
+                        query.exec();
+                        ui->tab_materiau->setModel(M.afficher());
+                    }
+        //ui->message->setText("le point de suivi est 4");
+
 }

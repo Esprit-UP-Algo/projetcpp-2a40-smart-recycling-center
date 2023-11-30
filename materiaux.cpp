@@ -49,6 +49,25 @@ int Materiaux::getpointdesuivi()
 {
     return pointdesuivi;
 }
+int Materiaux::getpointdesuivi(int id)
+{
+    // Votre logique spécifique pour obtenir le point de suivi en fonction de l'ID
+    // Utilisez QSqlQuery pour interroger la base de données.
+
+    QSqlQuery query;
+    query.prepare("SELECT pointdesuivi FROM materiau WHERE id = :id");
+    query.bindValue(":id", id);
+
+    if (query.exec() && query.next()) {
+        // Si la requête s'exécute avec succès et au moins une ligne est renvoyée,
+        // vous pouvez supposer que l'ID existe, et vous récupérez le pointdesuivi.
+        return query.value(0).toInt();
+    }
+
+    // Si l'ID n'est pas trouvé ou s'il y a une erreur dans la requête,
+    // vous pouvez retourner une valeur par défaut (ajustez selon vos besoins).
+    return -1; // Ou toute autre valeur qui indique que l'ID n'a pas été trouvé ou qu'il y a une erreur.
+}
 
 void Materiaux::setid(int id)
 {

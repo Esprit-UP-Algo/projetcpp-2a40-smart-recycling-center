@@ -15,6 +15,7 @@ QT       += core gui charts
 QT       += printsupport
 CONFIG   += c++11
 QT       += axcontainer
+QT       += serialport
 INCLUDEPATH += C:/Qt/5.x/mingw53_32/include
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -36,12 +37,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    arduino.cpp \
     connection.cpp \
     main.cpp \
     mainwindow.cpp \
     materiaux.cpp
 
 HEADERS += \
+    arduino.h \
     connection.h \
     mainwindow.h \
     materiaux.h

@@ -13,6 +13,7 @@
 #include <QTimer>
 #include <QBarSeries>
 #include "materiaux.h"
+#include "arduino.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -48,9 +49,16 @@ private slots:
 
     void on_pb_inserer_clicked();
 
+    void on_pb_envoyer_clicked();
+    void update_label();
+    void updateDatabase(int id, int capteur);
+    void envoyerEtLire();
+
 private:
     Ui::MainWindow *ui;
     Materiaux M;
     QTimer *timerAlerte;
+    Arduino A;
+    QByteArray data;
 };
 #endif // MAINWINDOW_H

@@ -48,6 +48,7 @@ public:
     bool choisirIdASupprimer();
     void imprimerTableau(QTableView *tableView);
     QMap<QString, int> getStatistiquesParType();
+    int getpointdesuivi(int id);
 
 
 private:

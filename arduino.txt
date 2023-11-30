@@ -1,0 +1,39 @@
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+int r1=6;
+
+void setup() {
+
+  pinMode(r1,INPUT);
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0,0);
+ 
+  Serial.begin(9600);
+}
+//Serial.print(digitalRead(btn3));
+void loop() {
+  if (digitalRead(r1)==HIGH){
+    
+    lcd.clear();
+     lcd.print("non sature");
+     Serial.write("0");
+    delay(100);
+    
+ }
+ 
+  if(digitalRead(r1)==LOW)
+  {
+   
+    lcd.clear();
+    lcd.print("s
+    5
+    ature");
+    Serial.write("1");
+    delay(100);
+    
+  }
+
+}
+

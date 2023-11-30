@@ -1,7 +1,7 @@
  #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "conteneur.h"
-
+#include "mail.h"
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
@@ -34,6 +34,22 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
+//arduino
+    int ret=A.connect_arduino();
+    switch(ret)
+    {
+    case (0):qDebug()<<"arduino is avilble and connected to :"<<A.getarduino_port_name();
+        break;
+    case (1):qDebug()<<"arduino is avilble but not connected to :"<<A.getarduino_port_name();
+        break;
+    case (-1):qDebug()<<"arduino is not avilble ";
+    }
+    QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(update_label()));
+
+
+
+
+
 
     ui->radioButton_4->setChecked(true);
     ui->radioButton_2->setChecked(true);
@@ -166,7 +182,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-          ui->lc->setPlainText(mlocalisation);
 
       }
 
@@ -712,7 +727,6 @@ void MainWindow::on_pushButton_4_clicked()
 
 
 
-            ui->lc->setPlainText(mlocalisation);
 
         }
 }
@@ -763,43 +777,14 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pdf_2_clicked()
 {
-    ui->comboBox->hide();
-    ui->groupBox_14->show();
+    ui->table->setModel(C.afficher());
 }
 
 
 void MainWindow::on_evoyer_mail_clicked()
 {
-    QString to = "nouha.hadjbrahim@esprit.tn";
-       QString subject = "hi";
-       QString body = "221JFT7160";
-
-       QString smtpServer = "smtp.gmail.com";
-       int smtpPort = 465; // Use port 587 for STARTTLS
-       QString username = "nouha.hadjbrahim@esprit.tn"; // Replace with your Gmail address
-       QString password = "rhev qdfe hgdj neww"; // Replace with your Gmail password
-
-       QString from = username;
-
-       QString message = "From: " + from + "\r\n";
-       message += "To: " + to + "\r\n";
-       message += "Subject: " + subject + "\r\n\r\n";
-       message += body;
-
-       QNetworkRequest request(QUrl("smtp://" + smtpServer + ":" + QString::number(smtpPort)));
-       request.setRawHeader("Authorization", "Basic " + QByteArray(QString("%1:%2").arg(username).arg(password).toUtf8()).toBase64());
-
-       connect(networkManager, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply){
-           if (reply->error() == QNetworkReply::NoError) {
-               QMessageBox::information(this, "Email Sent", "Email sent successfully!");
-           } else {
-               QMessageBox::warning(this, "Error", "Failed to send email. Error: " + reply->errorString());
-           }
-
-           reply->deleteLater();
-       });
-
-       networkManager->post(request, message.toUtf8());
+    mailer::sendEmail("nouhahbhbn@gmail.com", "hi", "Localisation");
+    QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("Message envoyé"),QMessageBox::Cancel);
 
 }
 void MainWindow::updateTimeSlot()
@@ -817,8 +802,9 @@ void MainWindow::on_pushButton_5_clicked()
 
 void MainWindow::on_pdf_3_clicked()
 {
-    ui->comboBox->hide();
     ui->groupBox_15->show();
+
+
 }
 
 
@@ -938,4 +924,47 @@ void MainWindow::on_radioButton_3_clicked()
 void MainWindow::on_radioButton_4_clicked()
 {
     showNormal();
+}
+
+void MainWindow::on_pdf_5_clicked()
+{
+    mailer mail;
+    QString host=ui->ccode_2->currentText();
+    QString objet=ui->objet->text();
+    QString body=ui->textEdit->toPlainText();
+    int i=mail.sendEmail(host, objet, body);
+    if(i!=-1)
+    {
+        QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("Message envoyé"),QMessageBox::Cancel);
+
+    }
+}
+
+
+
+void MainWindow::on_pdf_6_clicked()
+{
+    ui->objet->clear();
+    ui->textEdit->clear();
+}
+void MainWindow::update_label()
+{
+    QSqlQuery query;
+
+    data=A.read_from_arduino();
+    QString code=ui->ccode->currentText();
+    qDebug() << "data="<<data;
+    if(data=="1"){
+
+        query.prepare("UPDATE CONTENEUR SET ETAT='Sature' WHERE CODE=:code ");
+        query.bindValue(":code",code);
+        query.exec();
+
+    }
+    else{
+        query.prepare("UPDATE CONTENEUR SET ETAT='Non sature' WHERE CODE=:code ");
+        query.bindValue(":code",code);
+        query.exec();
+
+    }
 }

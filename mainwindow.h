@@ -1,5 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#include "arduino.h"
+
 #include "conteneur.h"
 #include <QMainWindow>
 
@@ -87,6 +89,13 @@ void on_pushButton_3_clicked();
 
     void on_radioButton_4_clicked();
 
+    void on_pdf_5_clicked();
+
+    void on_ccode_2_activated(const QString &arg1);
+
+    void on_pdf_6_clicked();
+    void update_label();
+
 private:
     Ui::MainWindow *ui;
     Conteneur C;
@@ -97,6 +106,8 @@ private:
             bool isMuted;
             int previousVolume;
             void toggleMute();
+    QByteArray data;
+    Arduino A;
 
 
 };

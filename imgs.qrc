@@ -1,0 +1,36 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/inter/ajouter.png</file>
+        <file>image/inter/base3.png</file>
+        <file>image/inter/calendrier.png</file>
+        <file>image/inter/camions.png</file>
+        <file>image/inter/camions2.png</file>
+        <file>image/inter/check.png</file>
+        <file>image/inter/contenaire (1).png</file>
+        <file>image/inter/contenaire.png</file>
+        <file>image/inter/dispo.png</file>
+        <file>image/inter/email.png</file>
+        <file>image/inter/fleche droite.png</file>
+        <file>image/inter/fleche gauche.png</file>
+        <file>image/inter/infos.png</file>
+        <file>image/inter/logout.png</file>
+        <file>image/inter/modification.png</file>
+        <file>image/inter/non dispo.png</file>
+        <file>image/inter/pdf (1).png</file>
+        <file>image/inter/pdf.png</file>
+        <file>image/inter/recherche.png</file>
+        <file>image/inter/Rectangle 67 (1).png</file>
+        <file>image/inter/RectangleAjouter.png</file>
+        <file>image/inter/RectangleCalendrier.png</file>
+        <file>image/inter/RectangleListe.png</file>
+        <file>image/inter/RectangleNote.png</file>
+        <file>image/inter/se-deconnecter (1).png</file>
+        <file>image/inter/se-deconnecter.png</file>
+        <file>image/inter/stat.png</file>
+        <file>image/login/CLOSE.png</file>
+        <file>image/login/login (1).png</file>
+        <file>image/login/oeil (1).png</file>
+        <file>image/login/oeil.png</file>
+        <file>image/login/open.png</file>
+    </qresource>
+</RCC>

@@ -33,6 +33,7 @@ Camion::Camion(QWidget *parent):QWidget(parent)
     stat_lab=new QLabel(stat);
 
 
+
     /*QLabel *ajoutText= new QLabel("Ajouter",ajouter);
     ajoutText->setStyleSheet("color:black;font-size:20px;");
     ajoutText->setGeometry();*/
@@ -268,6 +269,10 @@ Camion::Camion(QWidget *parent):QWidget(parent)
     histolab->hide();
 
 
+QLabel *date=new QLabel("13 nov 2023 -> 19 nov 2023",this);
+date->setGeometry(10,696,500,100);
+
+
     connect(ajout_btn,&QPushButton::clicked,this,&Camion::enregistrer);
     connect(supp_btn,&QPushButton::clicked,this,&Camion::supp_cam);
     connect(modif_btnBox,&QPushButton::clicked,this,&Camion::modifier_cam);
@@ -281,10 +286,22 @@ Camion::Camion(QWidget *parent):QWidget(parent)
     connect(btn_search,&QPushButton::clicked,this,&Camion::Recherher);
     connect(trie,&QPushButton::clicked,this,&Camion::sortData);
     connect(refrech_btn,&QPushButton::clicked,this,&Camion::refreshTable);
-    connect(pdf_btn,&QPushButton::clicked,this,&Camion::showpdf);
+    connect(pdf_btn,&QPushButton::clicked,this,&Camion::showpdf2);
 
     Calendrier *reg = new Calendrier(calendar);
     reg->move(0,0);
+
+    int ret= A.connect_arduino();
+    switch (ret) {
+    case (0):qDebug()<<"arduino is available and connected to:"<<A.getArduino_port_name();
+        break;
+    case (1):qDebug()<<"arduino is available and not connected to:"<<A.getArduino_port_name();
+        break;
+    case(-1):qDebug()<<"arduino is not available:";
+        break;
+    }
+
+    QObject::connect(A.get_serial(),SIGNAL(readyRead()),this,SLOT(updatdispo_arduino()) );
 }
 
 Camion::Camion(QString mat,QString etat,QString dispo,QString desti,int nb_ent,QDate d,QString note)
@@ -763,3 +780,128 @@ QString modelHeader;
         QMessageBox::warning(this, "Error", "Failed to open the file.");
     }
 }*/
+
+
+void Camion::showpdf2()
+{
+
+
+
+QString strStream;
+
+                         QTextStream out(&strStream);
+
+                         const int rowCount = list->model()->rowCount();
+
+                         const int columnCount = list->model()->columnCount();
+
+
+
+                         out <<  "<html>\n"
+
+                             "<head>\n"
+
+                             "<meta Content=\"Text/html; charset=Windows-1251\">\n"
+
+                             <<  QString("<title>%1</title>\n").arg("strTitle")
+
+                             <<  "</head>\n"
+
+                             "<body bgcolor=#ffffff link=#5000A0>\n"
+
+
+
+                            //     "<align='right'> " << datefich << "</align>"
+
+                             "<center> <H1>Liste des Camions </H1></br></br><table border=1 cellspacing=0 cellpadding=2>\n";
+
+
+
+                         // headers
+
+                         out << "<thead><tr bgcolor=#f0f0f0> <th>Numero</th>";
+
+                         for (int column = 0; column < columnCount; column++)
+
+                             if (!list->isColumnHidden(column))
+
+                                 out << QString("<th>%1</th>").arg(list->model()->headerData(column, Qt::Horizontal).toString());
+
+                         out << "</tr></thead>\n";
+
+
+
+                         // data table
+
+                         for (int row = 0; row < rowCount; row++) {
+
+                             out << "<tr> <td bkcolor=0>" << row+1 <<"</td>";
+
+                             for (int column = 0; column < columnCount; column++) {
+
+                                 if (!list->isColumnHidden(column)) {
+
+                                     QString data = list->model()->data(list->model()->index(row, column)).toString().simplified();
+
+                                     out << QString("<td bkcolor=0>%1</td>").arg((!data.isEmpty()) ? data : QString("&nbsp;"));
+
+                                 }
+
+                             }
+
+                             out << "</tr>\n";
+
+                         }
+
+                         out <<  "</table> </center>\n"
+
+                             "</body>\n"
+
+                             "</html>\n";
+
+
+
+                   QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Sauvegarder en PDF", QString(), "*.pdf");
+
+                     if (QFileInfo(fileName).suffix().isEmpty()) { fileName.append(".pdf"); }
+
+
+
+                    QPrinter printer (QPrinter::PrinterResolution);
+
+                     printer.setOutputFormat(QPrinter::PdfFormat);
+
+                    printer.setPaperSize(QPrinter::A4);
+
+                   printer.setOutputFileName(fileName);
+
+
+
+                    QTextDocument doc;
+
+                     doc.setHtml(strStream);
+
+                     doc.setPageSize(printer.pageRect().size()); // This is necessary if you want to hide the page number
+
+                     doc.print(&printer);
+
+}
+void Camion::updatdispo_arduino()
+{
+    QSqlQuery query;
+    Camion  c;
+    data=A.read_from_arduino();
+    qDebug()<<"data="<<data;
+    if(data=="1")
+    {
+        query.prepare("UPDATE camion SET disponibilite='Disponible' where matricule='C003'");
+        query.exec();
+        list->setModel(c.afficher());
+    }
+    else
+    {
+        query.prepare("UPDATE camion SET disponibilite='Indisponible' where matricule='C003'");
+        query.exec();
+        list->setModel(c.afficher());
+    }
+}

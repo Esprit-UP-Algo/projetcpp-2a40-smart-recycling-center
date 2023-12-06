@@ -1,17 +1,19 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
-#include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlQuery>
+#include "QtSql/QSqlDatabase"
+#include "QtSql/qsqlquery.h"
+#include "QtSql/QSqlError"
 
 class Connection
 {
+    QSqlDatabase db;
 public:
     Connection();
-    bool createconnect();
-    int Authentification(int loginn,QString nom);
+    bool createConnection();
+    int Authentification(QString loginn,QString nom);
 
 
+    void closeConnection();
 };
 
 #endif // CONNECTION_H

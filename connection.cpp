@@ -1,13 +1,15 @@
 #include "connection.h"
+#include "ui_mainwindow.h"
 
 Connection::Connection()
 {
 
 }
 
-bool Connection::createconnect()
-{bool test=false;
-QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
+bool Connection::createConnection()
+{
+db = QSqlDatabase ::addDatabase("QODBC");
+bool test=false;
 db.setDatabaseName("Source_Projet2A");
 db.setUserName("Anas");//inserer nom de l'utilisateur
 db.setPassword("esprit18");//inserer mot de passe de cet utilisateur
@@ -15,18 +17,19 @@ db.setPassword("esprit18");//inserer mot de passe de cet utilisateur
 if (db.open())
 test=true;
 
+
+
+
     return  test;
 }
-int Connection::Authentification(int loginn,QString nom)
+int Connection::Authentification(QString loginn,QString nom)
 {
-    QSqlDatabase bd = QSqlDatabase::database();
+   // QSqlDatabase bd = QSqlDatabase::database();
 
         QSqlQuery query;
-        QString log=QString::number(loginn);
-        query.prepare("SELECT * FROM ETUDIANT where CIN_FOUR=\'"+log+"\' AND NOM_FOUR=\'"+nom+"\'");
-
-        query.exec();
-        if (query.next())
+        query.prepare("SELECT * FROM ETUDIANT where CIN_FOUR=\'"+loginn+"\' AND NOM_FOUR=\'"+nom+"\'");
+        query.next();
+        if (query.exec())
         {
              return 1;
         }
@@ -38,3 +41,8 @@ int Connection::Authentification(int loginn,QString nom)
 
 
 }
+
+
+
+
+void Connection ::closeConnection() {db.close();}
